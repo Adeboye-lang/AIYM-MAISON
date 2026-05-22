@@ -23,6 +23,7 @@ export default function AuthLayout({
           src={imageSrc}
           alt={imageAlt}
           fill
+          unoptimized
           className="object-cover object-top"
           priority
         />

@@ -20,6 +20,7 @@ export default function AuthCard({
         src={imageSrc}
         alt={imageAlt}
         fill
+        unoptimized
         className="object-cover object-center"
         priority
       />
