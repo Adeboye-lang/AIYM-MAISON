@@ -47,8 +47,10 @@ export default function AdminProduct() {
         d.variants.forEach((v: any) => {
           if (v.variantKey) {
             setPrices((prev) => ({ ...prev, [v.variantKey]: v.price }));
-            if (v.images?.[0]) {
-              setImages((prev) => ({ ...prev, [v.variantKey]: v.images[0] }));
+            // Only use DB image if it starts with /images/ or https:// (valid path)
+            const img = v.images?.[0];
+            if (img && (img.startsWith("/images/") || img.startsWith("https://"))) {
+              setImages((prev) => ({ ...prev, [v.variantKey]: img }));
             }
           }
         });
