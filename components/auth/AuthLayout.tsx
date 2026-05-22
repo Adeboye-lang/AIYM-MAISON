@@ -19,14 +19,12 @@ export default function AuthLayout({
     <div className="min-h-screen grid md:grid-cols-2">
       {/* Left — image panel */}
       <div className="hidden md:flex relative flex-col items-end justify-end overflow-hidden">
-        <Image
-          src={imageSrc}
-          alt={imageAlt}
-          fill
-          unoptimized
-          className="object-cover object-top"
-          priority
-        />
+       <Image
+  src={imageSrc}
+  alt={imageAlt}
+  fill
+  className="object-cover object-top"
+/>
         {/* gradient — heavier at bottom for text legibility */}
         <div className="absolute inset-0 bg-gradient-to-t from-[#1a0d05]/85 via-[#1a0d05]/25 to-transparent" />
         <div className="relative z-10 p-10 text-left">
