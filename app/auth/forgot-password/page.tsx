@@ -30,7 +30,7 @@ export default function ForgotPasswordPage() {
   };
 
   return (
-    <AuthCard imageSrc="/images/Picture 5.png" imageAlt="AIYM glow lifestyle">
+    <AuthCard imageSrc="/images/Picture-5.png" imageAlt="AIYM glow lifestyle">
       <div className="space-y-6">
         <Link href="/auth/login" className="inline-flex items-center gap-2 text-xs text-brand-brown-light hover:text-brand-brown transition-colors">
           <ArrowLeft className="h-3.5 w-3.5" />

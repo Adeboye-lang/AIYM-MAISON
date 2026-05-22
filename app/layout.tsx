@@ -35,8 +35,8 @@ export const metadata: Metadata = {
   },
   robots: { index: true, follow: true },
   icons: {
-    icon: "/images/New Logo.png",
-    apple: "/images/New Logo.png",
+    icon: "/images/New-Logo.png",
+    apple: "/images/New-Logo.png",
   },
 };
 

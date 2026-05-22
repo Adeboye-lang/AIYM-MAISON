@@ -89,7 +89,7 @@ function VerifyEmailContent() {
 
 export default function VerifyEmailPage() {
   return (
-    <AuthCard imageSrc="/images/Picture 11.png" imageAlt="AIYM lifestyle">
+    <AuthCard imageSrc="/images/Picture-11.png" imageAlt="AIYM lifestyle">
       <Suspense>
         <VerifyEmailContent />
       </Suspense>

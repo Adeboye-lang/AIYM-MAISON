@@ -73,7 +73,7 @@ export default function Navbar() {
             className="absolute left-1/2 -translate-x-1/2 flex items-center"
           >
             <Image
-              src="/images/New Logo.png"
+              src="/images/New-Logo.png"
               alt="AIYM"
               width={90}
               height={48}

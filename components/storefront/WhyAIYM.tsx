@@ -43,7 +43,7 @@ export default function WhyAIYM() {
           {/* Image — shown at its natural 5:4 landscape ratio so nothing is cut off */}
           <div className="relative w-full pb-[80.9%]">
             <Image
-              src="/images/Product 5.png"
+              src="/images/Product-5.png"
               alt="Nubian Velvet tanning foam product"
               fill
               className="object-cover object-center"

@@ -29,13 +29,13 @@ function BeforeAfterSlider() {
       onTouchMove={(e) => handleMove(e.touches[0].clientX)}
     >
       {/* After */}
-      <Image src="/images/Picture 8.png" alt="8 hours tan result" fill className="object-cover" draggable={false} />
+      <Image src="/images/Picture-8.png" alt="8 hours tan result" fill className="object-cover" draggable={false} />
       {/* Before — clipped */}
       <div
         className="shade-clip-panel absolute inset-0 overflow-hidden"
         style={{ "--shade-clip": `${100 - pct}%` } as React.CSSProperties}
       >
-        <Image src="/images/Picture 6.jpg" alt="Before tan" fill className="object-cover" draggable={false} />
+        <Image src="/images/Picture-6.jpg" alt="Before tan" fill className="object-cover" draggable={false} />
       </div>
       {/* Labels */}
       <div className="absolute top-3 left-3 bg-brand-brown/70 text-white text-[9px] uppercase tracking-widest px-2 py-1">Before</div>
@@ -54,8 +54,8 @@ function BeforeAfterSlider() {
 }
 
 const shades = [
-  { label: "4 Hours", src: "/images/Picture 5.png", alt: "4 hour tan result" },
-  { label: "Overnight", src: "/images/Picture 9.jpg", alt: "Overnight tan result" },
+  { label: "4 Hours", src: "/images/Picture-5.png", alt: "4 hour tan result" },
+  { label: "Overnight", src: "/images/Picture-9.jpg", alt: "Overnight tan result" },
 ];
 
 export default function ShadeComparison() {

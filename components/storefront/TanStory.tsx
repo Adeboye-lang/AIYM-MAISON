@@ -15,7 +15,7 @@ export default function TanStory() {
       {/* Parallax background image */}
       <motion.div className="absolute inset-0 scale-110" style={{ y }}>
         <Image
-          src="/images/Picture 3.png"
+          src="/images/Picture-3.png"
           alt="Model showcasing Nubian Velvet tan"
           fill
           className="object-cover object-center"

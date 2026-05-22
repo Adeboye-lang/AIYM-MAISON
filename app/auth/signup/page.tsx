@@ -74,7 +74,7 @@ export default function SignupPage() {
   // Dev mode: show the verification link inline
   if (devLink) {
     return (
-      <AuthLayout imageSrc="/images/Picture 2.png" imageAlt="AIYM lifestyle" tagline="Your glow. Your shade. Your way.">
+      <AuthLayout imageSrc="/images/Picture-2.png" imageAlt="AIYM lifestyle" tagline="Your glow. Your shade. Your way.">
         <div className="space-y-5">
           <div>
             <h1 className="font-display text-3xl text-brand-brown mb-1">Account created!</h1>

@@ -18,7 +18,7 @@ export default function Hero() {
       {/* Parallax background */}
       <motion.div className="absolute inset-0 scale-110" style={{ y }}>
         <Image
-          src="/images/Picture 1.png"
+          src="/images/Picture-1.png"
           alt="Model showcasing AIYM Nubian Velvet glow"
           fill
           className="object-cover object-top"

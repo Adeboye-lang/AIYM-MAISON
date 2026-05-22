@@ -9,10 +9,10 @@ import { useCart } from "./CartDrawer";
 import { AccordionItem } from "@/components/ui/Accordion";
 
 const gallery = [
-  { src: "/images/Main Product.jpg", alt: "Nubian Velvet tanning mousse" },
-  { src: "/images/Product 1.jpg", alt: "Product detail" },
-  { src: "/images/Product 2.jpg", alt: "Product lifestyle" },
-  { src: "/images/Product 3.jpg", alt: "Product texture" },
+  { src: "/images/Main-Product.jpg", alt: "Nubian Velvet tanning mousse" },
+  { src: "/images/Product-1.jpg", alt: "Product detail" },
+  { src: "/images/Product-2.jpg", alt: "Product lifestyle" },
+  { src: "/images/Product-3.jpg", alt: "Product texture" },
   { src: "/images/Mittens.png", alt: "AIYM mitt and foam bundle" },
 ];
 
@@ -65,8 +65,8 @@ export default function ProductSpotlight() {
     <section id="product" className="bg-brand-white">
       <div className="max-w-7xl mx-auto grid md:grid-cols-2">
 
-        {/* Image gallery panel */}
-        <div className="flex flex-col-reverse sm:flex-row gap-3 bg-brand-surface p-4 min-h-[340px] md:min-h-[520px]">
+        {/* Image gallery panel — hidden on mobile (variant preview shown inline instead) */}
+        <div className="hidden md:flex flex-row gap-3 bg-brand-surface p-4 md:min-h-[520px]">
           {/* Thumbnails — horizontal on mobile, vertical on sm+ */}
           <div className="flex sm:flex-col flex-row gap-2 sm:w-16 w-full flex-shrink-0 overflow-x-auto sm:overflow-visible">
             {gallery.map((img, i) => (
@@ -140,6 +140,15 @@ export default function ProductSpotlight() {
           {/* Variant selector */}
           <div>
             <p className="text-[11px] uppercase tracking-[0.2em] text-brand-brown mb-3">Choose Your Kit</p>
+            {/* Mobile-only: active variant image preview */}
+            <div className="md:hidden relative w-full h-48 mb-3 overflow-hidden bg-brand-surface">
+              <Image
+                src={gallery[activeImg].src}
+                alt={gallery[activeImg].alt}
+                fill
+                className="object-cover"
+              />
+            </div>
             <div className="grid grid-cols-2 gap-3">
               {variants.map((v) => {
                 const isSelected = selectedVariant.id === v.id;

@@ -16,7 +16,7 @@ import { CartItem } from "@/lib/types";
 
 // Image shown in cart per variant
 const VARIANT_IMAGES: Record<string, string> = {
-  "foam-only": "/images/Main Product.jpg",
+  "foam-only": "/images/Main-Product.jpg",
   "foam-with-mitts": "/images/Mittens.png",
 };
 
@@ -199,7 +199,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
           <>
             <div className="flex-1 overflow-y-auto p-6 space-y-6">
               {items.map((item) => {
-                const imgSrc = VARIANT_IMAGES[item.variantId] ?? "/images/Main Product.jpg";
+                const imgSrc = VARIANT_IMAGES[item.variantId] ?? "/images/Main-Product.jpg";
                 return (
                   <div key={item.variantId} className="flex gap-4">
                     <div className="w-20 h-20 bg-brand-surface flex-shrink-0 overflow-hidden">

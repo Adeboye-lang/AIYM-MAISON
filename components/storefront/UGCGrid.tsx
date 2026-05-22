@@ -4,11 +4,11 @@ import Image from "next/image";
 import { motion } from "framer-motion";
 
 const ugcItems = [
-  { src: "/images/Picture 2.png",  username: "@nubianvelvet",  handle: "Amara K." },
-  { src: "/images/Picture 11.png", username: "@glowwithaiym",  handle: "Zara O." },
-  { src: "/images/Picture 12.jpg", username: "@melanintan",    handle: "Imani T." },
-  { src: "/images/Picture 20.png", username: "@aiymofficial",  handle: "Sade B." },
-  { src: "/images/Picture 9.jpg",  username: "@maisonaiym",    handle: "Kezia M." },
+  { src: "/images/Picture-2.png",  username: "@nubianvelvet",  handle: "Amara K." },
+  { src: "/images/Picture-11.png", username: "@glowwithaiym",  handle: "Zara O." },
+  { src: "/images/Picture-12.jpg", username: "@melanintan",    handle: "Imani T." },
+  { src: "/images/Picture-20.png", username: "@aiymofficial",  handle: "Sade B." },
+  { src: "/images/Picture-9.jpg",  username: "@maisonaiym",    handle: "Kezia M." },
 ];
 
 const pressLogos = ["VOGUE", "COSMOPOLITAN", "SUPERDRUG", "BEAUTY BAY", "GLAMOUR"];

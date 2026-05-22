@@ -23,7 +23,7 @@ export const product = {
       price: 26.0,
       priceDisplay: "£26.00",
       inStock: true,
-      image: "/images/Main Product.jpg",
+      image: "/images/Main-Product.jpg",
     },
     {
       id: "foam-with-mitts",
