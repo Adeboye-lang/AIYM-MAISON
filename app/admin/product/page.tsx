@@ -114,6 +114,7 @@ export default function AdminProduct() {
                         src={images[v.id]}
                         alt={v.label}
                         fill
+                        unoptimized
                         className="object-cover"
                       />
                     )}
