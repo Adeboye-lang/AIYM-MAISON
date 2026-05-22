@@ -55,3 +55,44 @@ export async function sendPasswordResetEmail(email: string, token: string) {
       "Click below to choose a new password. This link expires in <strong>1 hour</strong>. Didn't request this? You can ignore this email.",
       link, "Reset Password"));
 }
+
+export async function sendAdminNewOrderEmail(orderId: string, customerEmail: string, total: number, itemsSummary: string) {
+  const link = `https://admin.maisonaiym.com/orders/${orderId}`;
+  const adminEmail = process.env.ADMIN_EMAIL ?? "admin@maisonaiym.com";
+  await send(adminEmail, `New Order — £${total.toFixed(2)}`,
+    brandedHtml("New order received",
+      `A new order of <strong>£${total.toFixed(2)}</strong> has been placed by <strong>${customerEmail}</strong>.<br/><br/>${itemsSummary}`,
+      link, "View Order"));
+}
+
+export async function sendOrderConfirmationEmail(email: string, orderId: string, total: number, itemsSummary: string) {
+  const link = `${APP_URL}/account/orders`;
+  await send(email, "Your AIYM order is confirmed",
+    brandedHtml("Order confirmed ✓",
+      `Thank you for your order! We're preparing your Nubian Velvet now.<br/><br/>${itemsSummary}<br/><br/><strong>Order total: £${total.toFixed(2)}</strong><br/>Order ref: <strong>#${orderId.slice(0, 8).toUpperCase()}</strong>`,
+      link, "View My Orders"));
+}
+
+export async function sendTrackingEmail(email: string, orderId: string, trackingNumber: string) {
+  const link = `${APP_URL}/account/orders`;
+  await send(email, "Your AIYM order is on its way!",
+    brandedHtml("Your order has been dispatched",
+      `Great news — your Nubian Velvet is on its way!<br/><br/>Tracking number: <strong>${trackingNumber}</strong><br/>Order ref: <strong>#${orderId.slice(0, 8).toUpperCase()}</strong><br/><br/>Please allow 1–2 business days for tracking to update.`,
+      link, "View My Orders"));
+}
+
+export async function sendRefundEmail(email: string, orderId: string, refundAmt: number) {
+  const link = `${APP_URL}/account/orders`;
+  await send(email, "Your AIYM refund has been issued",
+    brandedHtml("Refund issued",
+      `Your refund of <strong>£${refundAmt.toFixed(2)}</strong> for order <strong>#${orderId.slice(0, 8).toUpperCase()}</strong> has been processed.<br/><br/>Please allow 5–10 business days for the amount to appear on your statement.`,
+      link, "View My Orders"));
+}
+
+export async function sendReviewRequestEmail(email: string, firstName: string, orderId: string) {
+  const link = `${APP_URL}/#reviews`;
+  await send(email, "How's your glow? Leave us a review ✨",
+    brandedHtml(`How's your glow, ${firstName || "gorgeous"}?`,
+      `We hope you're loving your Nubian Velvet! Your feedback means the world to us and helps other melanin beauties find their perfect tan.<br/><br/>Order ref: <strong>#${orderId.slice(0, 8).toUpperCase()}</strong>`,
+      link, "Leave a Review"));
+}

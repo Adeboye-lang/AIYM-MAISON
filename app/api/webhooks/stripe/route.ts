@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { randomUUID } from "crypto";
 import { getStripe } from "@/lib/stripe";
 import sql from "@/lib/db";
+import { sendAdminNewOrderEmail, sendOrderConfirmationEmail } from "@/lib/email";
 
 export async function POST(req: NextRequest) {
   const sig = req.headers.get("stripe-signature");
@@ -36,17 +37,30 @@ export async function POST(req: NextRequest) {
       const customerId = session.metadata?.customerId || null;
       const email = session.customer_details?.email ?? session.metadata?.customerEmail ?? "";
 
+      const paymentIntent = session.payment_intent ?? null;
+
       // Create the order
       await sql`
-        INSERT INTO "Order" (id, "customerId", email, status, total, shipping, "createdAt", "updatedAt")
-        VALUES (${orderId}, ${customerId}, ${email}, 'processing', ${total}, ${shipping}, NOW(), NOW())
+        INSERT INTO "Order" (id, "customerId", email, status, total, shipping, "stripePaymentIntent", "createdAt", "updatedAt")
+        VALUES (${orderId}, ${customerId}, ${email}, 'processing', ${total}, ${shipping}, ${paymentIntent}, NOW(), NOW())
       `;
 
-      // Create order items
+      // Create order items and build summary string for emails
+      const itemLines: string[] = [];
       for (const item of lineItems.data) {
+        const itemPrice = (item.amount_total ?? 0) / 100 / (item.quantity ?? 1);
         await sql`
           INSERT INTO "OrderItem" (id, "orderId", name, price, quantity)
-          VALUES (${randomUUID()}, ${orderId}, ${item.description ?? "Product"}, ${(item.amount_total ?? 0) / 100 / (item.quantity ?? 1)}, ${item.quantity ?? 1})
+          VALUES (${randomUUID()}, ${orderId}, ${item.description ?? "Product"}, ${itemPrice}, ${item.quantity ?? 1})
+        `;
+        itemLines.push(`${item.description ?? "Product"} × ${item.quantity ?? 1} — £${((item.amount_total ?? 0) / 100).toFixed(2)}`);
+
+        // Decrement stock for matching product variant
+        await sql`
+          UPDATE "Product"
+          SET "stockCount" = GREATEST(0, "stockCount" - ${item.quantity ?? 1}),
+              "updatedAt" = NOW()
+          WHERE name ILIKE ${'%' + (item.description ?? '') + '%'}
         `;
       }
 
@@ -63,6 +77,14 @@ export async function POST(req: NextRequest) {
           )
         `;
       }
+
+      const itemsSummary = itemLines.join("<br/>");
+
+      // Send admin notification and customer confirmation (non-blocking)
+      await Promise.allSettled([
+        sendAdminNewOrderEmail(orderId, email, total, itemsSummary),
+        sendOrderConfirmationEmail(email, orderId, total, itemsSummary),
+      ]);
 
       console.log(`Order ${orderId} created from Stripe session ${session.id}`);
     } catch (err) {
