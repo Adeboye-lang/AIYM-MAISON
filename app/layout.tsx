@@ -34,6 +34,10 @@ export const metadata: Metadata = {
     description: "The tanning mousse made for melanin-rich skin.",
   },
   robots: { index: true, follow: true },
+  icons: {
+    icon: "/public/New Logo.png",
+    apple: "/public/New Logo.png",
+  },
 };
 
 export default function RootLayout({
