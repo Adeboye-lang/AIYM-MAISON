@@ -31,8 +31,8 @@ export default function AdminProduct() {
 
   // Image upload state per variant
   const [images, setImages] = useState<Record<string, string>>({
-    "foam-only": "/public/Main Product.jpg",
-    "foam-with-mitts": "/public/Mittens.png",
+    "foam-only": "/images/Main Product.jpg",
+    "foam-with-mitts": "/images/Mittens.png",
   });
   const [uploading, setUploading] = useState<Record<string, boolean>>({});
   const fileInputRefs = useRef<Record<string, HTMLInputElement | null>>({});

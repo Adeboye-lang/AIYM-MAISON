@@ -87,7 +87,7 @@ function ResetPasswordForm() {
 
 export default function ResetPasswordPage() {
   return (
-    <AuthCard imageSrc="/public/Picture 20.png" imageAlt="AIYM lifestyle">
+    <AuthCard imageSrc="/images/Picture 20.png" imageAlt="AIYM lifestyle">
       <Suspense>
         <ResetPasswordForm />
       </Suspense>

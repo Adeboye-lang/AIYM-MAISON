@@ -10,7 +10,7 @@ interface AuthCardProps {
 
 export default function AuthCard({
   children,
-  imageSrc = "/public/Picture 9.jpg",
+  imageSrc = "/images/Picture 9.jpg",
   imageAlt = "AIYM brand lifestyle",
 }: AuthCardProps) {
   return (

@@ -9,11 +9,11 @@ import { useCart } from "./CartDrawer";
 import { AccordionItem } from "@/components/ui/Accordion";
 
 const gallery = [
-  { src: "/public/Main Product.jpg", alt: "Nubian Velvet tanning mousse" },
-  { src: "/public/Product 1.jpg", alt: "Product detail" },
-  { src: "/public/Product 2.jpg", alt: "Product lifestyle" },
-  { src: "/public/Product 3.jpg", alt: "Product texture" },
-  { src: "/public/Mittens.png", alt: "AIYM mitt and foam bundle" },
+  { src: "/images/Main Product.jpg", alt: "Nubian Velvet tanning mousse" },
+  { src: "/images/Product 1.jpg", alt: "Product detail" },
+  { src: "/images/Product 2.jpg", alt: "Product lifestyle" },
+  { src: "/images/Product 3.jpg", alt: "Product texture" },
+  { src: "/images/Mittens.png", alt: "AIYM mitt and foam bundle" },
 ];
 
 // Main image index per variant id

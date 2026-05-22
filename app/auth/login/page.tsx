@@ -102,7 +102,7 @@ function LoginForm() {
 
 export default function LoginPage() {
   return (
-    <AuthLayout imageSrc="/public/Picture 3.png" imageAlt="Model with golden tan" tagline="Crafted for melanin. Built for glow.">
+    <AuthLayout imageSrc="/images/Picture 3.png" imageAlt="Model with golden tan" tagline="Crafted for melanin. Built for glow.">
       <Suspense>
         <LoginForm />
       </Suspense>

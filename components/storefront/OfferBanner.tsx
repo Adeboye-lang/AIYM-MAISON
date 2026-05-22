@@ -65,7 +65,7 @@ export default function OfferBanner() {
         <div className="relative min-h-[260px] md:min-h-[420px]">
           <div className="hidden md:block absolute left-0 top-0 bottom-0 w-px bg-brand-yellow z-10" />
           <Image
-            src="/public/Mittens.png"
+            src="/images/Mittens.png"
             alt="AIYM velvet mitt and tanning foam bundle"
             fill
             className="object-cover object-center"
