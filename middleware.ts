@@ -39,11 +39,14 @@ export async function middleware(request: NextRequest) {
 
   // On the admin subdomain, rewrite root → /admin, /orders → /admin/orders, etc.
   if (isAdminSubdomain) {
-    // Skip Next.js internals and API routes
+    // Skip Next.js internals, API routes, auth pages, and static files
     if (
       pathname.startsWith("/_next") ||
       pathname.startsWith("/api") ||
-      pathname.startsWith("/auth")
+      pathname.startsWith("/auth") ||
+      pathname.startsWith("/images") ||
+      pathname.startsWith("/fonts") ||
+      pathname.match(/\.(ico|png|jpg|jpeg|svg|webp|gif|css|js|woff2?)$/)
     ) {
       return NextResponse.next();
     }
