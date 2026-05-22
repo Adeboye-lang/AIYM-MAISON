@@ -1,4 +1,3 @@
-import Image from "next/image";
 import Link from "next/link";
 import { ReactNode } from "react";
 
@@ -16,13 +15,11 @@ export default function AuthCard({
   return (
     <div className="min-h-screen relative flex flex-col items-center justify-center px-6 py-12">
       {/* Full-screen background image */}
-      <Image
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img
         src={imageSrc}
         alt={imageAlt}
-        fill
-        unoptimized
-        className="object-cover object-center"
-        priority
+        className="absolute inset-0 w-full h-full object-cover object-center"
       />
       {/* Dark overlay */}
       <div className="absolute inset-0 bg-[#1a0d05]/60" />
