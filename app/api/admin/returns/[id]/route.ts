@@ -22,14 +22,14 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id
   if (!ret) return NextResponse.json({ error: "Not found" }, { status: 404 });
 
   // If approving refund and a Stripe payment intent exists, issue real Stripe refund
-  if (status === "refund_issued" && ret.current_status !== "refund_issued") {
+  if (status === "refund_issued" && ret.status !== "refund_issued") {
     const amt = refundAmt ?? ret.refundamt;
     if (ret.stripepaymentintent && amt) {
       try {
         const stripe = getStripe();
         await stripe.refunds.create({
           payment_intent: ret.stripepaymentintent,
-          amount: Math.round(parseFloat(amt) * 100),
+          amount: Math.round(parseFloat(String(amt)) * 100),
         });
       } catch (err) {
         console.error("Stripe refund failed:", err);
@@ -37,9 +37,8 @@ export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id
       }
     }
 
-    // Email customer about refund
     if (ret.email && amt) {
-      await sendRefundEmail(ret.email, ret.orderid, parseFloat(amt)).catch(console.error);
+      await sendRefundEmail(ret.email, ret.orderid, parseFloat(String(amt))).catch(console.error);
     }
   }
 
