@@ -11,7 +11,7 @@ interface AuthLayoutProps {
 
 export default function AuthLayout({
   children,
-  imageSrc = "/images/Picture-6.png",
+  imageSrc = "/images/newmodel.jpg",
   imageAlt = "AIYM brand lifestyle",
   tagline = "Crafted for melanin. Built for glow.",
 }: AuthLayoutProps) {
