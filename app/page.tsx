@@ -14,6 +14,7 @@ import FAQAccordion from "@/components/storefront/FAQAccordion";
 import Newsletter from "@/components/storefront/Newsletter";
 import Footer from "@/components/storefront/Footer";
 import CookieBanner from "@/components/storefront/CookieBanner";
+import ScrollToTop from "@/components/storefront/ScrollToTop";
 import { CartProvider } from "@/components/storefront/CartDrawer";
 
 export default function Home() {
@@ -39,6 +40,7 @@ export default function Home() {
       </main>
       <Footer />
       <CookieBanner />
+      <ScrollToTop />
     </CartProvider>
   );
 }
