@@ -11,8 +11,6 @@ const ugcItems = [
   { src: "/images/Picture-9.jpg",  username: "@maisonaiym",    handle: "Kezia M." },
 ];
 
-const pressLogos = ["VOGUE", "COSMOPOLITAN", "SUPERDRUG", "BEAUTY BAY", "GLAMOUR"];
-
 export default function UGCGrid() {
   return (
     <section className="bg-brand-cream">
@@ -63,30 +61,13 @@ export default function UGCGrid() {
         </div>
       </div>
 
-      {/* Press bar — marquee style */}
-      <div className="bg-brand-brown py-7 px-6 border-t border-brand-yellow">
-        <div className="max-w-6xl mx-auto">
-          <p className="text-center text-[10px] uppercase tracking-[0.3em] text-brand-yellow/60 mb-4">As Seen In</p>
-          <div className="flex flex-wrap items-center justify-center gap-8 md:gap-16">
-            {pressLogos.map((logo) => (
-              <PressLogo key={logo} logo={logo} />
-            ))}
-          </div>
-        </div>
+      {/* Brand strip */}
+      <div className="bg-brand-brown border-t border-brand-yellow py-8 px-6 text-center">
+        <p className="font-display italic text-xl md:text-2xl text-white/90 tracking-wide mb-1">
+          Crafted for melanin. Built for glow.
+        </p>
+        <p className="text-[10px] uppercase tracking-[0.3em] text-brand-yellow/80">— Maison AIYM</p>
       </div>
     </section>
-  );
-}
-
-function PressLogo({ logo }: { logo: string }) {
-  return (
-    <motion.span
-      className="font-display text-brand-yellow text-xl tracking-widest cursor-default"
-      initial={{ opacity: 0.35 }}
-      whileHover={{ opacity: 1, scale: 1.05 }}
-      transition={{ duration: 0.2 }}
-    >
-      {logo}
-    </motion.span>
   );
 }

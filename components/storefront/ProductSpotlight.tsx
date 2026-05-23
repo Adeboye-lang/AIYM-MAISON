@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
-import { Star, Check, Truck } from "lucide-react";
+import { Check, Truck } from "lucide-react";
 import { product } from "@/lib/constants";
 import { useCart } from "./CartDrawer";
 import { AccordionItem } from "@/components/ui/Accordion";
@@ -13,7 +13,7 @@ const gallery = [
   { src: "/images/Product-1.jpg", alt: "Product detail" },
   { src: "/images/Product-2.jpg", alt: "Product lifestyle" },
   { src: "/images/Product-3.jpg", alt: "Product texture" },
-  { src: "/images/Mittens.png", alt: "AIYM mitt and foam bundle" },
+  { src: "/images/New-Mittens.png", alt: "AIYM mitt and foam bundle" },
 ];
 
 // Main image index per variant id
@@ -65,28 +65,11 @@ export default function ProductSpotlight() {
     <section id="product" className="bg-brand-white">
       <div className="max-w-7xl mx-auto grid md:grid-cols-2">
 
-        {/* Image gallery panel — hidden on mobile (variant preview shown inline instead) */}
-        <div className="hidden md:flex flex-row gap-3 bg-brand-surface p-4 md:min-h-[520px]">
-          {/* Thumbnails — horizontal on mobile, vertical on sm+ */}
-          <div className="flex sm:flex-col flex-row gap-2 sm:w-16 w-full flex-shrink-0 overflow-x-auto sm:overflow-visible">
-            {gallery.map((img, i) => (
-              <button
-                key={i}
-                type="button"
-                title={img.alt}
-                onClick={() => setActiveImg(i)}
-                className={`relative aspect-square flex-shrink-0 sm:w-full w-14 overflow-hidden border-2 transition-all duration-200 ${
-                  activeImg === i ? "border-brand-yellow" : "border-transparent opacity-60 hover:opacity-100"
-                }`}
-              >
-                <Image src={img.src} alt={img.alt} fill className="object-cover" />
-              </button>
-            ))}
-          </div>
-
-          {/* Main image */}
-          <div className="relative flex-1 overflow-hidden">
-            <div className="absolute inset-3 border border-brand-yellow z-10 pointer-events-none" />
+        {/* Image gallery panel — landscape layout, hidden on mobile */}
+        <div className="hidden md:flex flex-col bg-brand-surface self-stretch">
+          {/* Main image — fills all available height */}
+          <div className="relative flex-1 overflow-hidden min-h-[400px]">
+            <div className="absolute inset-4 border border-brand-yellow z-10 pointer-events-none" />
             <AnimatePresence mode="wait">
               <motion.div
                 key={activeImg}
@@ -100,11 +83,28 @@ export default function ProductSpotlight() {
                   src={gallery[activeImg].src}
                   alt={gallery[activeImg].alt}
                   fill
-                  className="object-cover"
+                  className="object-contain object-center bg-brand-surface"
                   priority={activeImg === 0}
                 />
               </motion.div>
             </AnimatePresence>
+          </div>
+
+          {/* Horizontal thumbnails pinned at bottom */}
+          <div className="flex flex-row gap-2 p-3 border-t border-brand-yellow/20 overflow-x-auto flex-shrink-0">
+            {gallery.map((img, i) => (
+              <button
+                key={i}
+                type="button"
+                title={img.alt}
+                onClick={() => setActiveImg(i)}
+                className={`relative aspect-square flex-shrink-0 w-14 overflow-hidden border-2 transition-all duration-200 ${
+                  activeImg === i ? "border-brand-yellow" : "border-transparent opacity-60 hover:opacity-100"
+                }`}
+              >
+                <Image src={img.src} alt={img.alt} fill className="object-contain bg-brand-surface p-1" />
+              </button>
+            ))}
           </div>
         </div>
 
@@ -123,17 +123,6 @@ export default function ProductSpotlight() {
           </div>
 
           <div className="h-px bg-brand-yellow w-full" />
-
-          {/* Rating */}
-          <div className="flex items-center gap-2">
-            <span className="font-display text-2xl text-brand-yellow">4.9</span>
-            <div className="flex gap-0.5">
-              {Array.from({ length: 5 }).map((_, i) => (
-                <Star key={i} className="h-4 w-4 fill-brand-yellow text-brand-yellow" />
-              ))}
-            </div>
-            <span className="text-xs text-brand-brown-light">(124 reviews)</span>
-          </div>
 
           <p className="text-brand-brown-mid text-sm leading-relaxed">{product.description}</p>
 
@@ -191,14 +180,14 @@ export default function ProductSpotlight() {
             <span className="font-display text-2xl text-brand-brown">{selectedVariant.priceDisplay}</span>
           </div>
 
-          {/* Add to bag */}
+          {/* Pre-order button */}
           <motion.button
             type="button"
             onClick={handleAddToBag}
             className="w-full bg-brand-brown text-white uppercase tracking-[0.2em] text-xs py-4 hover:bg-brand-brown-mid transition-colors"
             whileTap={{ scale: 0.98 }}
           >
-            Add to Bag
+            Pre-Order Now
           </motion.button>
 
           {/* Delivery note */}

@@ -20,7 +20,7 @@ export default function FAQAccordion() {
         <div className="text-center mt-12">
           <p className="text-brand-brown-mid text-sm mb-4">Still have questions?</p>
           <a
-            href="mailto:support@maisonaiym.com"
+            href="mailto:support@maisonaiym.com?subject=Nubian%20Velvet%20Enquiry&body=Hi%20Maison%20AIYM%20team%2C%0A%0AI%20have%20a%20question%20about%3A%0A%0A"
             className="inline-flex items-center uppercase tracking-widest text-xs font-medium px-8 py-3 border border-brand-brown text-brand-brown hover:bg-brand-brown hover:text-white transition-colors"
           >
             Email Us

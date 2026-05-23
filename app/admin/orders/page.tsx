@@ -6,7 +6,7 @@ import StatusBadge from "@/components/admin/StatusBadge";
 import { formatDate, formatCurrency } from "@/lib/utils";
 import { Download } from "lucide-react";
 
-const statusOptions = ["All", "Processing", "Dispatched", "Delivered", "Returned", "Refunded", "Cancelled"];
+const statusOptions = ["All", "pre-order", "Processing", "Dispatched", "Delivered", "Returned", "Refunded", "Cancelled"];
 
 export default function AdminOrders() {
   const [search, setSearch] = useState("");

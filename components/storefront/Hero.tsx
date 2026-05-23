@@ -81,7 +81,7 @@ export default function Hero() {
 
         {/* Main heading — two lines, AIYM in gold */}
         <motion.h1
-          className="font-display text-[2.8rem] sm:text-[4rem] md:text-[6rem] lg:text-[9rem] text-white uppercase leading-[0.88] mb-6 tracking-[0.05em]"
+          className="font-display text-[2rem] sm:text-[2.8rem] md:text-[4rem] lg:text-[5.5rem] text-white uppercase leading-[0.88] mb-6 tracking-[0.05em]"
           initial={{ opacity: 0, y: 50 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, delay: 0.15, ease: "easeOut" }}

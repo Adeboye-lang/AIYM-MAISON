@@ -76,6 +76,7 @@ export async function POST(req: NextRequest) {
       metadata: {
         customerId: session?.sub ?? "",
         customerEmail: session?.email ?? "",
+        isPreOrder: "true",
       },
       ...(session?.email ? { customer_email: session.email } : {}),
     });

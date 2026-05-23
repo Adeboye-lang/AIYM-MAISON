@@ -52,7 +52,7 @@ export default function Navbar() {
   return (
     <>
       <nav className="fixed top-10 left-0 right-0 z-40 bg-brand-white border-b border-brand-yellow shadow-sm">
-        <div className="max-w-7xl mx-auto px-6 flex items-center justify-between h-16">
+        <div className="max-w-7xl mx-auto px-6 h-16 grid grid-cols-3 items-center">
 
           {/* Left nav */}
           <div className="hidden md:flex items-center gap-8">
@@ -67,23 +67,25 @@ export default function Navbar() {
             ))}
           </div>
 
+          {/* Mobile: left placeholder to keep logo centred */}
+          <div className="md:hidden" />
+
           {/* Centre logo */}
-          <Link
-            href="/"
-            className="absolute left-1/2 -translate-x-1/2 flex items-center"
-          >
-            <Image
-              src="/images/New-Logo.png"
-              alt="AIYM"
-              width={90}
-              height={48}
-              className="object-contain"
-              priority
-            />
-          </Link>
+          <div className="flex justify-center">
+            <Link href="/" className="flex items-center">
+              <Image
+                src="/images/New-Logo.png"
+                alt="AIYM"
+                width={64}
+                height={32}
+                className="object-contain"
+                priority
+              />
+            </Link>
+          </div>
 
           {/* Right icons */}
-          <div className="flex items-center gap-4 text-brand-brown">
+          <div className="flex items-center justify-end gap-4 text-brand-brown">
             <button type="button" title="Search" onClick={() => setSearchOpen(true)} className="hover:text-brand-yellow transition-colors hidden md:block" aria-label="Search">
               <Search className="h-4 w-4" />
             </button>

@@ -9,7 +9,7 @@ import TanStory from "@/components/storefront/TanStory";
 import ShadeComparison from "@/components/storefront/ShadeComparison";
 import OfferBanner from "@/components/storefront/OfferBanner";
 import UGCGrid from "@/components/storefront/UGCGrid";
-import Reviews from "@/components/storefront/Reviews";
+import GlowPromise from "@/components/storefront/GlowPromise";
 import FAQAccordion from "@/components/storefront/FAQAccordion";
 import Newsletter from "@/components/storefront/Newsletter";
 import Footer from "@/components/storefront/Footer";
@@ -34,7 +34,7 @@ export default function Home() {
         <ShadeComparison />
         <OfferBanner />
         <UGCGrid />
-        <Reviews />
+        <GlowPromise />
         <FAQAccordion />
         <Newsletter />
       </main>

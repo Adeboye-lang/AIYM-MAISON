@@ -38,11 +38,12 @@ export async function POST(req: NextRequest) {
       const email = session.customer_details?.email ?? session.metadata?.customerEmail ?? "";
 
       const paymentIntent = session.payment_intent ?? null;
+      const orderStatus = session.metadata?.isPreOrder === "true" ? "pre-order" : "processing";
 
       // Create the order
       await sql`
         INSERT INTO "Order" (id, "customerId", email, status, total, shipping, "stripePaymentIntent", "createdAt", "updatedAt")
-        VALUES (${orderId}, ${customerId}, ${email}, 'processing', ${total}, ${shipping}, ${paymentIntent}, NOW(), NOW())
+        VALUES (${orderId}, ${customerId}, ${email}, ${orderStatus}, ${total}, ${shipping}, ${paymentIntent}, NOW(), NOW())
       `;
 
       // Create order items and build summary string for emails

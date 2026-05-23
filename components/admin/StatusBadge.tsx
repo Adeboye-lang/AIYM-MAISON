@@ -4,6 +4,7 @@ import { OrderStatus, PaymentStatus } from "@/lib/types";
 type AnyStatus = OrderStatus | PaymentStatus | string;
 
 const config: Record<string, string> = {
+  "pre-order": "bg-purple-100 text-purple-700",
   Processing: "bg-amber-100 text-amber-700",
   Dispatched: "bg-blue-100 text-blue-700",
   Delivered: "bg-green-100 text-green-700",
