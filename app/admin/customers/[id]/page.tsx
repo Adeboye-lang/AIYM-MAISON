@@ -4,7 +4,6 @@ import { useState, useEffect, useCallback } from "react";
 import { useParams } from "next/navigation";
 import Link from "next/link";
 import StatusBadge from "@/components/admin/StatusBadge";
-import ConfirmModal from "@/components/admin/ConfirmModal";
 import { formatDate, formatCurrency } from "@/lib/utils";
 import { Check, X } from "lucide-react";
 
@@ -14,9 +13,6 @@ export default function AdminCustomerDetail() {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [orders, setOrders] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
-  const [note, setNote] = useState("");
-  const [noteSaving, setNoteSaving] = useState(false);
-  const [suspendModal, setSuspendModal] = useState(false);
   const params = useParams();
   const id = params.id as string;
 
@@ -27,32 +23,11 @@ export default function AdminCustomerDetail() {
       .then((d) => {
         setCustomer(d.customer);
         setOrders(d.orders ?? []);
-        setNote(d.customer?.adminnotes ?? "");
       })
       .finally(() => setLoading(false));
   }, [id]);
 
   useEffect(() => { load(); }, [load]);
-
-  const saveNote = async () => {
-    setNoteSaving(true);
-    await fetch(`/api/admin/customers/${id}`, {
-      method: "PATCH",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ adminNotes: note }),
-    });
-    setNoteSaving(false);
-  };
-
-  const handleSuspend = async () => {
-    await fetch(`/api/admin/customers/${id}`, {
-      method: "PATCH",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ suspended: !customer?.suspended }),
-    });
-    setSuspendModal(false);
-    load();
-  };
 
   if (loading) return <div className="text-brand-brown-light text-sm animate-pulse py-12 text-center">Loading…</div>;
   if (!customer) return <div className="text-brand-brown-light text-sm py-12 text-center">Customer not found.</div>;
@@ -87,26 +62,6 @@ export default function AdminCustomerDetail() {
                 {customer.marketing ? <Check className="h-4 w-4 text-green-600" /> : <X className="h-4 w-4 text-brand-brown-light" />}
               </div>
             </div>
-          </div>
-
-          {/* Admin notes */}
-          <div className="bg-brand-white border-t-[3px] border-brand-yellow p-5 space-y-3">
-            <h2 className="text-xs uppercase tracking-widest text-brand-brown-light">Admin Notes</h2>
-            <textarea
-              rows={3}
-              value={note}
-              onChange={(e) => setNote(e.target.value)}
-              placeholder="Internal notes about this customer..."
-              className="w-full border border-brand-brown-light bg-brand-white text-brand-brown px-3 py-2 text-sm outline-none focus:border-brand-yellow resize-none"
-            />
-            <button
-              type="button"
-              onClick={saveNote}
-              disabled={noteSaving}
-              className="text-xs text-brand-yellow hover:underline uppercase tracking-wide disabled:opacity-50"
-            >
-              {noteSaving ? "Saving…" : "Save"}
-            </button>
           </div>
 
           {/* Orders */}
@@ -164,26 +119,16 @@ export default function AdminCustomerDetail() {
             >
               Send Email
             </a>
-            <button
-              type="button"
-              onClick={() => setSuspendModal(true)}
-              className="w-full border border-red-300 text-red-600 text-xs uppercase tracking-widest py-3 hover:bg-red-50 transition-colors"
+            <a
+              href={`mailto:${customer.email}?subject=Your Maison AIYM Order`}
+              className="block w-full border border-brand-brown-light text-brand-brown text-xs uppercase tracking-widest py-3 text-center hover:bg-brand-surface transition-colors"
             >
-              {customer.suspended ? "Unsuspend Account" : "Suspend Account"}
-            </button>
+              Email Customer
+            </a>
           </div>
         </div>
       </div>
 
-      <ConfirmModal
-        open={suspendModal}
-        onClose={() => setSuspendModal(false)}
-        onConfirm={handleSuspend}
-        title={customer.suspended ? "Unsuspend Account" : "Suspend Account"}
-        description={customer.suspended ? "This will restore this customer's access." : "This will prevent this customer from logging in."}
-        confirmLabel={customer.suspended ? "Unsuspend" : "Suspend"}
-        destructive={!customer.suspended}
-      />
     </div>
   );
 }

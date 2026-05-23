@@ -10,8 +10,7 @@ export async function GET(_req: NextRequest, { params }: { params: Promise<{ id:
 
   const rows = await sql`
     SELECT
-      c.id, c."firstName", c."lastName", c.email, c.phone,
-      c."createdAt", c."lastLoginAt", c."emailVerified", c."suspended",
+      c.id, c."firstName", c."lastName", c.email, c."createdAt", c."emailVerified",
       EXISTS (
         SELECT 1 FROM "NewsletterSubscriber" ns
         WHERE ns.email = c.email AND ns.status = 'active'
@@ -47,23 +46,4 @@ export async function GET(_req: NextRequest, { params }: { params: Promise<{ id:
     },
     orders,
   });
-}
-
-export async function PATCH(req: NextRequest, { params }: { params: Promise<{ id: string }> }) {
-  const session = await getSession();
-  if (!session || session.role !== "admin") return NextResponse.json({ error: "Forbidden" }, { status: 403 });
-
-  const { id } = await params;
-  const { adminNotes, suspended } = await req.json();
-
-  await sql`
-    UPDATE "Customer"
-    SET
-      "adminNotes" = COALESCE(${adminNotes ?? null}, "adminNotes"),
-      "suspended" = COALESCE(${suspended ?? null}, "suspended"),
-      "updatedAt" = NOW()
-    WHERE id = ${id}
-  `;
-
-  return NextResponse.json({ success: true });
 }
