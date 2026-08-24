@@ -180,14 +180,14 @@ export default function ProductSpotlight() {
             <span className="font-display text-2xl text-brand-brown">{selectedVariant.priceDisplay}</span>
           </div>
 
-          {/* Pre-order button */}
+          {/* Add to bag button */}
           <motion.button
             type="button"
             onClick={handleAddToBag}
             className="w-full bg-brand-brown text-white uppercase tracking-[0.2em] text-xs py-4 hover:bg-brand-brown-mid transition-colors"
             whileTap={{ scale: 0.98 }}
           >
-            Pre-Order Now
+            Ready to Buy
           </motion.button>
 
           {/* Delivery note */}
