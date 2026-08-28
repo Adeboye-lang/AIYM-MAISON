@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { getStripe } from "@/lib/stripe";
 import { getSession } from "@/lib/auth-helpers";
 import sql from "@/lib/db";
+import { buildShippingOptions, getZoneForCountry } from "@/lib/shipping";
 
 const APP_URL = process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000";
 
@@ -31,10 +32,21 @@ async function getVariantPrices(): Promise<Record<string, { name: string; price:
 
 export async function POST(req: NextRequest) {
   try {
-    const { items } = await req.json();
+    const { items, country } = await req.json();
 
     if (!items || !Array.isArray(items) || items.length === 0) {
       return NextResponse.json({ error: "Cart is empty." }, { status: 400 });
+    }
+
+    // Default to the UK so older clients (and anyone who skips the picker)
+    // behave exactly as before.
+    const destination = typeof country === "string" && country ? country : "GB";
+    const zone = getZoneForCountry(destination);
+    if (!zone) {
+      return NextResponse.json(
+        { error: "Sorry, we don't ship to that country yet." },
+        { status: 400 }
+      );
     }
 
     const session = await getSession();
@@ -66,11 +78,12 @@ export async function POST(req: NextRequest) {
       payment_method_types: ["card"],
       mode: "payment",
       line_items: lineItems,
-      // Free shipping over £40
-      shipping_options: subtotal >= 4000
-        ? [{ shipping_rate_data: { type: "fixed_amount", fixed_amount: { amount: 0, currency: "gbp" }, display_name: "Free UK Delivery" } }]
-        : [{ shipping_rate_data: { type: "fixed_amount", fixed_amount: { amount: 395, currency: "gbp" }, display_name: "Standard UK Delivery (3–5 days)" } }],
-      shipping_address_collection: { allowed_countries: ["GB", "IE"] },
+      // Rates come from the destination's zone — see lib/shipping.ts.
+      // Free delivery over £40 applies to the UK only.
+      shipping_options: buildShippingOptions(zone, subtotal),
+      // Locked to the country chosen in the cart, since the rates above were
+      // priced for that country specifically.
+      shipping_address_collection: { allowed_countries: [destination.toUpperCase()] },
       success_url: `${APP_URL}/checkout/success?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${APP_URL}/`,
       metadata: {

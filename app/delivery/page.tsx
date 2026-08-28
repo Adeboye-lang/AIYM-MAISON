@@ -35,6 +35,20 @@ export default function DeliveryPage() {
               <Section title="Delivery">
                 <p>
                   We offer Royal Mail 1st and 2nd class tracked UK shipping service for all orders.
+                  Standard UK delivery is £3.95 and arrives within 3–5 working days, and is free on
+                  orders over £40. Next day delivery is £6.95 for orders placed before 2pm on a
+                  working day.
+                </p>
+                <p>
+                  We also ship worldwide. Delivery costs are calculated at checkout based on your
+                  destination — from £9.95 to Europe, £14.95 to the US and Canada, and £22.95 to the
+                  rest of the world. International orders typically arrive within 5–21 working days
+                  depending on the destination.
+                </p>
+                <p>
+                  Please note that free delivery applies to UK orders only, and that customs charges
+                  or import duties may be payable on international orders. These are set by the
+                  destination country and are the responsibility of the customer.
                 </p>
               </Section>
 
