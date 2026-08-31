@@ -14,7 +14,10 @@ export async function GET(req: NextRequest) {
   const offset = (page - 1) * limit;
 
   const orders = await sql`
-    SELECT o.id, o.status, o.total, o.shipping, o."createdAt", o."trackingNumber", o.email,
+    SELECT o.id, o.status, o.total, o.shipping, o.email,
+           -- Lowercase aliases: the admin table reads these lowercased.
+           o."createdAt" AS createdat,
+           o."trackingNumber" AS trackingnumber,
            COALESCE(c."firstName" || ' ' || c."lastName", o.email) AS customer,
            (SELECT name FROM "OrderItem" WHERE "orderId" = o.id LIMIT 1) AS variant
     FROM "Order" o

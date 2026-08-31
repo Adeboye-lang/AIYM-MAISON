@@ -65,8 +65,19 @@ export async function POST(req: NextRequest) {
         `;
       }
 
-      // Create shipping address if provided
-      const addr = session.shipping_details?.address;
+      // Create shipping address if provided.
+      // Stripe moved shipping_details under collected_information in newer API
+      // versions, so check both, then fall back to the billing address.
+      const addr =
+        session.shipping_details?.address ??
+        session.collected_information?.shipping_details?.address ??
+        session.customer_details?.address;
+      const addrName =
+        session.shipping_details?.name ??
+        session.collected_information?.shipping_details?.name ??
+        session.customer_details?.name ??
+        "";
+
       if (addr) {
         await sql`
           INSERT INTO "Address" (id, "orderId", line1, line2, city, postcode, country)
@@ -76,6 +87,21 @@ export async function POST(req: NextRequest) {
             ${addr.city ?? ""}, ${addr.postal_code ?? ""},
             ${addr.country ?? "GB"}
           )
+        `;
+
+        // The admin order page reads the address from this column, so it must
+        // be written too — not just the Address row above.
+        await sql`
+          UPDATE "Order"
+          SET "shippingAddress" = ${JSON.stringify({
+            name: addrName,
+            line1: addr.line1 ?? "",
+            line2: addr.line2 ?? null,
+            city: addr.city ?? "",
+            postcode: addr.postal_code ?? "",
+            country: addr.country ?? "GB",
+          })}::jsonb
+          WHERE id = ${orderId}
         `;
       }
 

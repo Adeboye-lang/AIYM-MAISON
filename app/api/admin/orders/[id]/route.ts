@@ -8,9 +8,24 @@ export async function GET(_req: NextRequest, { params }: { params: Promise<{ id:
   if (!session || session.role !== "admin") return NextResponse.json({ error: "Forbidden" }, { status: 403 });
 
   const { id } = await params;
+  // Fall back to the Address table when shippingAddress wasn't recorded on the
+  // order itself, so older orders still show a destination.
   const rows = await sql`
     SELECT o.*, COALESCE(c."firstName" || ' ' || c."lastName", o.email) AS customer,
-           c."firstName", c."lastName"
+           c."firstName", c."lastName",
+           -- Lowercase aliases: Postgres preserves the case of quoted column
+           -- names, but the admin pages read them lowercased.
+           c."firstName" AS firstname, c."lastName" AS lastname,
+           o."createdAt" AS createdat,
+           o."trackingNumber" AS trackingnumber,
+           o."adminNotes" AS adminnotes,
+           COALESCE(
+             o."shippingAddress",
+             (SELECT jsonb_build_object(
+                       'line1', a.line1, 'line2', a.line2, 'city', a.city,
+                       'postcode', a.postcode, 'country', a.country)
+              FROM "Address" a WHERE a."orderId" = o.id LIMIT 1)
+           ) AS shippingaddress
     FROM "Order" o
     LEFT JOIN "Customer" c ON c.id = o."customerId"
     WHERE o.id = ${id} LIMIT 1
