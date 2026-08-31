@@ -13,6 +13,7 @@ import Link from "next/link";
 import Button from "@/components/ui/Button";
 import { product } from "@/lib/constants";
 import { CartItem } from "@/lib/types";
+import { ZONES, COUNTRY_NAMES, getZoneForCountry } from "@/lib/shipping";
 
 // Image shown in cart per variant
 const VARIANT_IMAGES: Record<string, string> = {
@@ -47,6 +48,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
   const [appliedDiscount, setAppliedDiscount] = useState<{ id: string; code: string; discount: number } | null>(null);
   const [discountError, setDiscountError] = useState("");
   const [applyingDiscount, setApplyingDiscount] = useState(false);
+  const [country, setCountry] = useState("GB");
 
   const addItem = useCallback(
     (variantId: string, variantLabel: string, price: number) => {
@@ -116,6 +118,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
         body: JSON.stringify({
           items: items.map((i) => ({ variantId: i.variantId, quantity: i.quantity })),
           discountCodeId: appliedDiscount?.id ?? null,
+          country,
         }),
       });
       const data = await res.json();
@@ -136,9 +139,14 @@ export function CartProvider({ children }: { children: ReactNode }) {
   const total = items.reduce((sum, i) => sum + i.price * i.quantity, 0);
   const discountAmount = appliedDiscount?.discount ?? 0;
   const grandTotal = Math.max(0, total - discountAmount);
-  const FREE_DELIVERY_THRESHOLD = 40;
-  const remaining = Math.max(0, FREE_DELIVERY_THRESHOLD - total);
-  const progressPct = Math.min(100, (total / FREE_DELIVERY_THRESHOLD) * 100);
+  // Delivery messaging follows the chosen destination — free delivery is a
+  // UK-only offer, so international shoppers see their flat rate instead.
+  const zone = getZoneForCountry(country);
+  const freeThreshold = zone?.freeOver != null ? zone.freeOver / 100 : null;
+  const remaining = freeThreshold != null ? Math.max(0, freeThreshold - total) : 0;
+  const progressPct = freeThreshold != null
+    ? Math.min(100, (total / freeThreshold) * 100)
+    : 0;
 
   return (
     <CartContext.Provider
@@ -259,7 +267,34 @@ export function CartProvider({ children }: { children: ReactNode }) {
 
             {/* Footer */}
             <div className="border-t border-brand-yellow p-6 space-y-4">
-              {remaining > 0 ? (
+              {/* Destination — rates are set per country, so we need it before
+                  sending the customer to Stripe. */}
+              <div className="space-y-1">
+                <label
+                  htmlFor="ship-country"
+                  className="text-[10px] uppercase tracking-widest text-brand-brown-light"
+                >
+                  Deliver to
+                </label>
+                <select
+                  id="ship-country"
+                  value={country}
+                  onChange={(e) => setCountry(e.target.value)}
+                  className="w-full border border-brand-brown-light bg-brand-white text-brand-brown px-3 py-2 text-xs outline-none focus:border-brand-yellow"
+                >
+                  {ZONES.map((z) => (
+                    <optgroup key={z.id} label={z.label}>
+                      {z.countries.map((c) => (
+                        <option key={c} value={c}>
+                          {COUNTRY_NAMES[c] ?? c}
+                        </option>
+                      ))}
+                    </optgroup>
+                  ))}
+                </select>
+              </div>
+
+              {freeThreshold != null && remaining > 0 ? (
                 <div className="space-y-1.5">
                   <div className="flex items-center gap-2 text-xs text-brand-brown-mid">
                     <Truck className="h-4 w-4 text-brand-yellow" />
@@ -272,12 +307,21 @@ export function CartProvider({ children }: { children: ReactNode }) {
                     />
                   </div>
                 </div>
-              ) : (
+              ) : freeThreshold != null ? (
                 <div className="flex items-center gap-2 text-xs text-green-600">
                   <Truck className="h-4 w-4" />
                   <span>You qualify for free UK delivery!</span>
                 </div>
-              )}
+              ) : zone ? (
+                <div className="flex items-start gap-2 text-xs text-brand-brown-mid">
+                  <Truck className="h-4 w-4 text-brand-yellow flex-shrink-0 mt-0.5" />
+                  <span>
+                    Delivery to {COUNTRY_NAMES[country] ?? country} from £
+                    {(zone.standard / 100).toFixed(2)}. Customs duties may apply
+                    on arrival.
+                  </span>
+                </div>
+              ) : null}
               {/* Discount code */}
               {appliedDiscount ? (
                 <div className="flex items-center justify-between text-xs">
